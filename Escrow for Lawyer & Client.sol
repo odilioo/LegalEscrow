@@ -21,4 +21,18 @@ contract LegalEscrow {
         require(msg.sender == client, "Only client can deposit");
         escrowAmount += msg.value;
     }
-    
+    function confirmWorkCompleted() external {
+        require(msg.sender == solicitor, "Only solicitor can confirm");
+        workCompleted = true;
+    }
+
+    function releasePayment() external {
+        require(workCompleted, "Work not completed");
+
+        uint amount = escrowAmount;
+        escrowAmount = 0;
+
+        (bool success, ) = solicitor.call{value: amount}("");
+        require(success, "Payment failed");
+    }
+}
