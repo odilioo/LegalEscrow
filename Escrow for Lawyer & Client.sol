@@ -12,6 +12,7 @@ contract LegalEscrow {
         client = payable(msg.sender);
         solicitor = payable(msg.sender); // set later
     }
+
     function setSolicitor(address payable _solicitor) external {
         require(msg.sender == client, "Only client can set solicitor");
         solicitor = _solicitor;
@@ -21,6 +22,7 @@ contract LegalEscrow {
         require(msg.sender == client, "Only client can deposit");
         escrowAmount += msg.value;
     }
+
     function confirmWorkCompleted() external {
         require(msg.sender == solicitor, "Only solicitor can confirm");
         workCompleted = true;
